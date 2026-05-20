@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA World Cup 2026 — Work Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060a0f; --surface:#0d1520; --panel:#111d2e; --border:#1e3048;
+  --accent:#00d4ff; --gold:#ffd700; --green:#00e676; --red:#ff4444;
+  --text:#e8f4ff; --muted:#5b7fa6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(0,212,255,.06) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 40% at 80% 90%,rgba(255,215,0,.04) 0%,transparent 60%);}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 80px;position:relative;z-index:1;}
+
+/* HEADER */
+.hdr{text-align:center;padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.hdr-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),#0099cc);color:#000;
+  font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:2px;margin-bottom:14px;text-transform:uppercase;}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,8vw,64px);letter-spacing:3px;line-height:1;
+  background:linear-gradient(135deg,#fff 0%,var(--gold) 50%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hdr p{color:var(--muted);font-size:12px;margin-top:8px;letter-spacing:1px;}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;overflow:hidden;}
+.card-hdr{padding:13px 20px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.card-hdr h2{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;}
+.badge{font-size:10px;color:var(--muted);letter-spacing:1px;background:var(--border);padding:2px 8px;border-radius:2px;}
+.card-body{padding:20px;}
+
+/* INPUTS */
+label.lbl{display:block;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+input[type=text], select{
+  width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;border-radius:4px;outline:none;
+  transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b7fa6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+input[type=text]{background-image:none;padding-right:12px;cursor:text;}
+select:focus,input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
+select option,select optgroup{background:#0d1520;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.two-col{grid-template-columns:1fr;}}
+
+/* SCORING */
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+@media(max-width:500px){.score-grid{grid-template-columns:repeat(2,1fr);}}
+.score-item{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:8px 10px;}
+.score-item .pts{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);}
+.score-item .lbl2{font-size:10px;color:var(--muted);}
+
+/* GROUPS */
+.groups-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:560px){.groups-grid{grid-template-columns:1fr;}}
+.grp-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:13px;}
+.grp-card .grp-lbl{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--accent);letter-spacing:1px;margin-bottom:3px;}
+.grp-card .grp-teams{font-size:9px;color:var(--muted);margin-bottom:10px;line-height:1.6;}
+.grp-card .pick-row{display:grid;grid-template-columns:50px 1fr;gap:6px;align-items:center;margin-bottom:6px;}
+.grp-card .pick-lbl{font-size:10px;font-weight:600;color:var(--green);}
+.grp-card .pick-lbl.sec{color:var(--accent);}
+
+/* BEST 3RD */
+.b3-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+@media(max-width:640px){.b3-grid{grid-template-columns:repeat(2,1fr);}}
+.b3-slot{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;transition:all .2s;}
+.b3-slot.filled{border-color:rgba(255,215,0,.35);background:rgba(255,215,0,.04);}
+.b3-slot.error{border-color:rgba(255,68,68,.5);}
+.b3-slot .slot-num{font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:5px;}
+.b3-slot select.picked{color:var(--gold);font-weight:600;}
+.b3-counter{padding:9px 16px;border-radius:4px;margin-bottom:12px;font-size:13px;font-weight:500;
+  display:flex;align-items:center;gap:8px;}
+.b3-counter.ok{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.b3-counter.warn{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.2);}
+.b3-counter.partial{background:rgba(0,212,255,.08);color:var(--accent);border:1px solid rgba(0,212,255,.15);}
+
+/* BRACKET */
+.rnd-hdr{font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:12px;color:var(--muted);
+  padding:10px 0 6px;display:flex;align-items:center;gap:8px;}
+.rnd-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.match{display:grid;grid-template-columns:52px 1fr 26px 1fr 140px 44px;gap:6px;align-items:center;
+  padding:5px 0;border-bottom:1px solid rgba(30,48,72,.5);}
+@media(max-width:560px){
+  .match{grid-template-columns:44px 1fr 20px 1fr;gap:4px;}
+  .match .wcol,.match .pcol{display:none;}}
+.mid{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.team-box{padding:7px 9px;border-radius:4px;font-size:12px;font-weight:500;
+  background:var(--panel);border:1px solid var(--border);transition:all .3s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.team-box.tbd{color:var(--muted);font-style:italic;font-size:11px;}
+.team-box.ok{color:var(--text);}
+.team-box.b3t{border-color:rgba(255,215,0,.25);background:rgba(255,215,0,.04);}
+.vs{text-align:center;color:var(--muted);font-size:10px;}
+.wcol select{background:rgba(0,230,118,.06);border-color:rgba(0,230,118,.2);color:var(--green);font-size:12px;padding:7px 26px 7px 8px;}
+.wcol select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,230,118,.1);}
+.pcol{font-size:10px;color:var(--muted);text-align:right;font-family:'DM Mono',monospace;}
+
+/* CHAMPION */
+.champ-banner{text-align:center;padding:28px 20px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));
+  border:1px solid rgba(255,215,0,.2);border-radius:8px;margin-top:20px;}
+.champ-lbl{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:6px;}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,5vw,44px);letter-spacing:3px;color:var(--gold);
+  min-height:46px;text-shadow:0 0 30px rgba(255,215,0,.4);transition:all .3s;}
+
+/* SAVE */
+.save-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-weight:600;
+  font-size:13px;padding:10px 18px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;}
+.btn-dl{background:linear-gradient(135deg,var(--accent),#0099cc);color:#000;}
+.btn-dl:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,212,255,.25);}
+.btn-sv{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.3);}
+.btn-sv:hover{background:rgba(0,230,118,.2);}
+.btn-ld{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.3);}
+.btn-ld:hover{background:rgba(0,212,255,.2);}
+.save-note{font-size:12px;margin-top:8px;min-height:18px;text-align:center;transition:all .3s;}
+.save-note.ok{color:var(--green);} .save-note.warn{color:var(--red);} .save-note.info{color:var(--accent);}
+.dl-note{font-size:11px;color:var(--muted);margin-top:8px;}
+
+/* PROGRESS */
+.prog-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--border);z-index:100;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width .4s;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeIn .35s ease both;}
+.card:nth-child(2){animation-delay:.05s;} .card:nth-child(3){animation-delay:.1s;}
+.card:nth-child(4){animation-delay:.15s;} .card:nth-child(5){animation-delay:.2s;}
+</style>
+</head>
+<body>
+<div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-badge">Octave Work Edition 2026</div>
+  <h1>World Cup<br>Predictor</h1>
+  <p>USA · MEXICO · CANADA &nbsp;|&nbsp; Jun 11 – Jul 19, 2026</p>
+</div>
+
+<!-- YOUR DETAILS -->
+<div class="card">
+  <div class="card-hdr"><h2>Your Details</h2><span class="badge">REQUIRED</span></div>
+  <div class="card-body">
+    <div class="two-col">
+      <div><label class="lbl">Your Name</label>
+        <input type="text" id="pname" placeholder="Enter your name…" oninput="updateProg()"></div>
+      <div><label class="lbl">🏆 Champion Pick (15 pts)</label>
+        <select id="champ" onchange="updateChamp();updateProg()">
+          <option value="">— select team —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORING -->
+<div class="card">
+  <div class="card-hdr"><h2>Scoring Guide</h2></div>
+  <div class="card-body">
+    <div class="score-grid">
+      <div class="score-item"><div class="pts">5</div><div class="lbl2">1st + 2nd correct</div></div>
+      <div class="score-item"><div class="pts">2</div><div class="lbl2">Only 1st or 2nd</div></div>
+      <div class="score-item"><div class="pts">3</div><div class="lbl2">Best 3rd correct</div></div>
+      <div class="score-item"><div class="pts">3</div><div class="lbl2">R32 winner</div></div>
+      <div class="score-item"><div class="pts">4</div><div class="lbl2">R16 winner</div></div>
+      <div class="score-item"><div class="pts">5</div><div class="lbl2">QF winner</div></div>
+      <div class="score-item"><div class="pts">7</div><div class="lbl2">SF winner</div></div>
+      <div class="score-item"><div class="pts">10</div><div class="lbl2">Final winner</div></div>
+      <div class="score-item"><div class="pts">15</div><div class="lbl2">Champion pick</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUPS -->
+<div class="card">
+  <div class="card-hdr"><h2>Group Stage</h2><span class="badge">1st + 2nd per group</span></div>
+  <div class="card-body">
+    <div class="groups-grid" id="groupsGrid"></div>
+  </div>
+</div>
+
+<!-- BEST 3RD -->
+<div class="card">
+  <div class="card-hdr"><h2>Best 3rd Place</h2><span class="badge">Pick 8 teams · 3 pts each · order matters</span></div>
+  <div class="card-body">
+    <div class="b3-counter partial" id="b3counter"><span id="b3txt">Select your 8 best 3rd place teams in order (best first)</span></div>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:14px">
+      Pick any team from any group — they don't have to be 3rd in your group picks. Each team must come from a different group. <strong style="color:var(--gold)">#1 = best, #8 = weakest of the 8.</strong>
+    </p>
+    <div class="b3-grid" id="b3grid"></div>
+  </div>
+</div>
+
+<!-- BRACKET -->
+<div class="card">
+  <div class="card-hdr"><h2>Your Bracket</h2><span class="badge">Auto-fills · pick the winner</span></div>
+  <div class="card-body">
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      Teams auto-populate from your group picks. Select the winner of each match — they cascade automatically.
+    </p>
+    <div id="bracketCont"></div>
+    <div class="champ-banner">
+      <div class="champ-lbl">🏆 My World Cup Champion</div>
+      <div class="champ-name" id="champDisp">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE & SEND -->
+<div class="card">
+  <div class="card-hdr"><h2>Save & Send</h2></div>
+  <div class="card-body" style="text-align:center;">
+    <div class="save-row">
+      <button class="btn btn-sv" onclick="saveDraft()">💾 Save Draft</button>
+      <button class="btn btn-ld" onclick="loadDraft()">📂 Load Draft</button>
+      <button class="btn btn-dl" onclick="downloadJSON()">⬇ Download Predictions</button>
+    </div>
+    <div class="save-note" id="saveNote"></div>
+    <p class="dl-note">Save draft = stays in this browser · Download = send the file to Juan before Jun 11</p>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+const FIFA_COMBOS = {
+  "ABCDEFGH": ["3C", "3E", "3B", "3F", "3A", "3G", "3D", "3H"],
+  "ABCDEFGI": ["3C", "3E", "3B", "3F", "3A", "3G", "3D", "3I"],
+  "ABCDEFGJ": ["3C", "3E", "3B", "3F", "3A", "3G", "3D", "3J"],
+  "ABCDEFGK": ["3C", "3E", "3B", "3F", "3A", "3G", "3D", "3K"],
+  "ABCDEFGL": ["3C", "3F", "3B", "3D", "3A", "3G", "3L", "3E"],
+  "ABCDEFHI": ["3C", "3E", "3B", "3A", "3H", "3F", "3D", "3I"],
+  "ABCDEFHJ": ["3C", "3E", "3B", "3A", "3H", "3F", "3D", "3J"],
+  "ABCDEFHK": ["3C", "3E", "3B", "3A", "3H", "3F", "3D", "3K"],
+  "ABCDEFHL": ["3C", "3E", "3B", "3D", "3A", "3F", "3L", "3H"],
+  "ABCDEFIJ": ["3C", "3E", "3B", "3A", "3I", "3F", "3D", "3J"],
+  "ABCDEFIK": ["3C", "3E", "3B", "3A", "3I", "3F", "3D", "3K"],
+  "ABCDEFIL": ["3C", "3E", "3B", "3D", "3A", "3F", "3L", "3I"],
+  "ABCDEFJK": ["3C", "3E", "3B", "3A", "3J", "3F", "3D", "3K"],
+  "ABCDEFJL": ["3C", "3E", "3B", "3D", "3A", "3F", "3L", "3J"],
+  "ABCDEFKL": ["3C", "3E", "3B", "3D", "3A", "3F", "3L", "3K"],
+  "ABCDEGHI": ["3C", "3E", "3B", "3A", "3H", "3G", "3D", "3I"],
+  "ABCDEGHJ": ["3C", "3E", "3B", "3A", "3H", "3G", "3D", "3J"],
+  "ABCDEGHK": ["3C", "3E", "3B", "3A", "3H", "3G", "3D", "3K"],
+  "ABCDEGHL": ["3C", "3E", "3B", "3D", "3A", "3G", "3L", "3H"],
+  "ABCDEGIJ": ["3C", "3E", "3B", "3A", "3I", "3G", "3D", "3J"],
+  "ABCDEGIK": ["3C", "3E", "3B", "3A", "3I", "3G", "3D", "3K"],
+  "ABCDEGIL": ["3C", "3E", "3B", "3D", "3A", "3G", "3L", "3I"],
+  "ABCDEGJK": ["3C", "3E", "3B", "3A", "3J", "3G", "3D", "3K"],
+  "ABCDEGJL": ["3C", "3E", "3B", "3D", "3A", "3G", "3L", "3J"],
+  "ABCDEGKL": ["3C", "3E", "3B", "3D", "3A", "3G", "3L", "3K"],
+  "ABCDEHIJ": ["3C", "3E", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABCDEHIK": ["3C", "3E", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABCDEHIL": ["3C", "3E", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABCDEHJK": ["3C", "3E", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABCDEHJL": ["3C", "3E", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABCDEHKL": ["3C", "3E", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABCDEIJK": ["3C", "3E", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABCDEIJL": ["3C", "3E", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABCDEIKL": ["3C", "3E", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABCDEJKL": ["3C", "3E", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABCDFGHI": ["3C", "3F", "3B", "3A", "3H", "3G", "3D", "3I"],
+  "ABCDFGHJ": ["3C", "3F", "3B", "3A", "3H", "3G", "3D", "3J"],
+  "ABCDFGHK": ["3C", "3F", "3B", "3A", "3H", "3G", "3D", "3K"],
+  "ABCDFGHL": ["3C", "3F", "3B", "3D", "3A", "3G", "3L", "3H"],
+  "ABCDFGIJ": ["3C", "3F", "3B", "3A", "3I", "3G", "3D", "3J"],
+  "ABCDFGIK": ["3C", "3F", "3B", "3A", "3I", "3G", "3D", "3K"],
+  "ABCDFGIL": ["3C", "3F", "3B", "3D", "3A", "3G", "3L", "3I"],
+  "ABCDFGJK": ["3C", "3F", "3B", "3A", "3J", "3G", "3D", "3K"],
+  "ABCDFGJL": ["3C", "3F", "3B", "3D", "3A", "3G", "3L", "3J"],
+  "ABCDFGKL": ["3C", "3F", "3B", "3D", "3A", "3G", "3L", "3K"],
+  "ABCDFHIJ": ["3C", "3F", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABCDFHIK": ["3C", "3F", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABCDFHIL": ["3C", "3F", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABCDFHJK": ["3C", "3F", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABCDFHJL": ["3C", "3F", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABCDFHKL": ["3C", "3F", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABCDFIJK": ["3C", "3F", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABCDFIJL": ["3C", "3F", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABCDFIKL": ["3C", "3F", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABCDFJKL": ["3C", "3F", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABCDGHIJ": ["3C", "3G", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABCDGHIK": ["3C", "3G", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABCDGHIL": ["3C", "3G", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABCDGHJK": ["3C", "3G", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABCDGHJL": ["3C", "3G", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABCDGHKL": ["3C", "3G", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABCDGIJK": ["3C", "3G", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABCDGIJL": ["3C", "3G", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABCDGIKL": ["3C", "3G", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABCDGJKL": ["3C", "3G", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABCDHIJK": ["3C", "3I", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABCDHIJL": ["3C", "3I", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABCDHIKL": ["3C", "3I", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABCDHJKL": ["3C", "3J", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABCDIJKL": ["3C", "3I", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABCEFGHI": ["3C", "3E", "3B", "3F", "3A", "3G", "3I", "3H"],
+  "ABCEFGHJ": ["3C", "3E", "3B", "3F", "3A", "3G", "3J", "3H"],
+  "ABCEFGHK": ["3C", "3F", "3B", "3A", "3H", "3G", "3E", "3K"],
+  "ABCEFGHL": ["3C", "3E", "3B", "3F", "3A", "3G", "3L", "3H"],
+  "ABCEFGIJ": ["3C", "3E", "3B", "3F", "3A", "3G", "3I", "3J"],
+  "ABCEFGIK": ["3C", "3E", "3B", "3F", "3A", "3G", "3I", "3K"],
+  "ABCEFGIL": ["3C", "3E", "3B", "3F", "3A", "3G", "3L", "3I"],
+  "ABCEFGJK": ["3C", "3E", "3B", "3F", "3A", "3G", "3J", "3K"],
+  "ABCEFGJL": ["3C", "3E", "3B", "3F", "3A", "3G", "3L", "3J"],
+  "ABCEFGKL": ["3C", "3E", "3B", "3F", "3A", "3G", "3L", "3K"],
+  "ABCEFHIJ": ["3C", "3E", "3B", "3A", "3H", "3F", "3I", "3J"],
+  "ABCEFHIK": ["3C", "3E", "3B", "3A", "3H", "3F", "3I", "3K"],
+  "ABCEFHIL": ["3C", "3E", "3B", "3A", "3H", "3F", "3L", "3I"],
+  "ABCEFHJK": ["3C", "3E", "3B", "3A", "3H", "3F", "3J", "3K"],
+  "ABCEFHJL": ["3C", "3E", "3B", "3A", "3H", "3F", "3L", "3J"],
+  "ABCEFHKL": ["3C", "3E", "3B", "3A", "3H", "3F", "3L", "3K"],
+  "ABCEFIJK": ["3C", "3E", "3B", "3A", "3I", "3F", "3J", "3K"],
+  "ABCEFIJL": ["3C", "3E", "3B", "3A", "3I", "3F", "3L", "3J"],
+  "ABCEFIKL": ["3C", "3E", "3B", "3A", "3I", "3F", "3L", "3K"],
+  "ABCEFJKL": ["3C", "3E", "3B", "3A", "3J", "3F", "3L", "3K"],
+  "ABCEGHIJ": ["3C", "3E", "3B", "3A", "3H", "3G", "3I", "3J"],
+  "ABCEGHIK": ["3C", "3E", "3B", "3A", "3H", "3G", "3I", "3K"],
+  "ABCEGHIL": ["3C", "3E", "3B", "3A", "3H", "3G", "3L", "3I"],
+  "ABCEGHJK": ["3C", "3E", "3B", "3A", "3H", "3G", "3J", "3K"],
+  "ABCEGHJL": ["3C", "3E", "3B", "3A", "3H", "3G", "3L", "3J"],
+  "ABCEGHKL": ["3C", "3E", "3B", "3A", "3H", "3G", "3L", "3K"],
+  "ABCEGIJK": ["3C", "3E", "3B", "3A", "3I", "3G", "3J", "3K"],
+  "ABCEGIJL": ["3C", "3E", "3B", "3A", "3I", "3G", "3L", "3J"],
+  "ABCEGIKL": ["3C", "3E", "3B", "3A", "3I", "3G", "3L", "3K"],
+  "ABCEGJKL": ["3C", "3E", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABCEHIJK": ["3C", "3E", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABCEHIJL": ["3C", "3E", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABCEHIKL": ["3C", "3E", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABCEHJKL": ["3C", "3E", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABCEIJKL": ["3E", "3I", "3B", "3A", "3J", "3C", "3L", "3K"],
+  "ABCFGHIJ": ["3C", "3F", "3B", "3A", "3H", "3G", "3I", "3J"],
+  "ABCFGHIK": ["3C", "3F", "3B", "3A", "3H", "3G", "3I", "3K"],
+  "ABCFGHIL": ["3C", "3F", "3B", "3A", "3H", "3G", "3L", "3I"],
+  "ABCFGHJK": ["3C", "3F", "3B", "3A", "3H", "3G", "3J", "3K"],
+  "ABCFGHJL": ["3C", "3F", "3B", "3A", "3H", "3G", "3L", "3J"],
+  "ABCFGHKL": ["3C", "3F", "3B", "3A", "3H", "3G", "3L", "3K"],
+  "ABCFGIJK": ["3C", "3F", "3B", "3A", "3I", "3G", "3J", "3K"],
+  "ABCFGIJL": ["3C", "3F", "3B", "3A", "3I", "3G", "3L", "3J"],
+  "ABCFGIKL": ["3C", "3F", "3B", "3A", "3I", "3G", "3L", "3K"],
+  "ABCFGJKL": ["3C", "3F", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABCFHIJK": ["3C", "3F", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABCFHIJL": ["3C", "3F", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABCFHIKL": ["3C", "3F", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABCFHJKL": ["3C", "3F", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABCFIJKL": ["3C", "3I", "3B", "3A", "3J", "3F", "3L", "3K"],
+  "ABCGHIJK": ["3C", "3G", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABCGHIJL": ["3C", "3G", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABCGHIKL": ["3C", "3G", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABCGHJKL": ["3C", "3G", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABCGIJKL": ["3C", "3I", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABCHIJKL": ["3C", "3I", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABDEFGHI": ["3E", "3F", "3B", "3A", "3H", "3G", "3D", "3I"],
+  "ABDEFGHJ": ["3E", "3F", "3B", "3A", "3H", "3G", "3D", "3J"],
+  "ABDEFGHK": ["3E", "3F", "3B", "3A", "3H", "3G", "3D", "3K"],
+  "ABDEFGHL": ["3E", "3F", "3B", "3D", "3A", "3G", "3L", "3H"],
+  "ABDEFGIJ": ["3E", "3F", "3B", "3A", "3I", "3G", "3D", "3J"],
+  "ABDEFGIK": ["3E", "3F", "3B", "3A", "3I", "3G", "3D", "3K"],
+  "ABDEFGIL": ["3E", "3F", "3B", "3D", "3A", "3G", "3L", "3I"],
+  "ABDEFGJK": ["3E", "3F", "3B", "3A", "3J", "3G", "3D", "3K"],
+  "ABDEFGJL": ["3E", "3F", "3B", "3D", "3A", "3G", "3L", "3J"],
+  "ABDEFGKL": ["3E", "3F", "3B", "3D", "3A", "3G", "3L", "3K"],
+  "ABDEFHIJ": ["3E", "3F", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABDEFHIK": ["3E", "3F", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABDEFHIL": ["3E", "3F", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABDEFHJK": ["3E", "3F", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABDEFHJL": ["3E", "3F", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABDEFHKL": ["3E", "3F", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDEFIJK": ["3E", "3F", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABDEFIJL": ["3E", "3F", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABDEFIKL": ["3E", "3F", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABDEFJKL": ["3E", "3F", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDEGHIJ": ["3E", "3G", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABDEGHIK": ["3E", "3G", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABDEGHIL": ["3E", "3G", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABDEGHJK": ["3E", "3G", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABDEGHJL": ["3E", "3G", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABDEGHKL": ["3E", "3G", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDEGIJK": ["3E", "3G", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABDEGIJL": ["3E", "3G", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABDEGIKL": ["3E", "3G", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABDEGJKL": ["3E", "3G", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDEHIJK": ["3E", "3I", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABDEHIJL": ["3E", "3I", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABDEHIKL": ["3E", "3I", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDEHJKL": ["3E", "3J", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDEIJKL": ["3E", "3I", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDFGHIJ": ["3F", "3G", "3B", "3A", "3H", "3D", "3I", "3J"],
+  "ABDFGHIK": ["3F", "3G", "3B", "3A", "3H", "3D", "3I", "3K"],
+  "ABDFGHIL": ["3F", "3G", "3B", "3A", "3H", "3D", "3L", "3I"],
+  "ABDFGHJK": ["3F", "3G", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABDFGHJL": ["3F", "3G", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABDFGHKL": ["3F", "3G", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDFGIJK": ["3F", "3G", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABDFGIJL": ["3F", "3G", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABDFGIKL": ["3F", "3G", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABDFGJKL": ["3F", "3G", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDFHIJK": ["3F", "3I", "3B", "3A", "3H", "3D", "3J", "3K"],
+  "ABDFHIJL": ["3F", "3I", "3B", "3A", "3H", "3D", "3L", "3J"],
+  "ABDFHIKL": ["3F", "3I", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDFHJKL": ["3F", "3J", "3B", "3A", "3H", "3D", "3L", "3K"],
+  "ABDFIJKL": ["3F", "3I", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDGHIJK": ["3H", "3G", "3B", "3A", "3I", "3D", "3J", "3K"],
+  "ABDGHIJL": ["3H", "3G", "3B", "3A", "3I", "3D", "3L", "3J"],
+  "ABDGHIKL": ["3H", "3G", "3B", "3A", "3I", "3D", "3L", "3K"],
+  "ABDGHJKL": ["3H", "3G", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDGIJKL": ["3I", "3G", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABDHIJKL": ["3H", "3I", "3B", "3A", "3J", "3D", "3L", "3K"],
+  "ABEFGHIJ": ["3E", "3F", "3B", "3A", "3H", "3G", "3I", "3J"],
+  "ABEFGHIK": ["3E", "3F", "3B", "3A", "3H", "3G", "3I", "3K"],
+  "ABEFGHIL": ["3E", "3F", "3B", "3A", "3H", "3G", "3L", "3I"],
+  "ABEFGHJK": ["3E", "3F", "3B", "3A", "3H", "3G", "3J", "3K"],
+  "ABEFGHJL": ["3E", "3F", "3B", "3A", "3H", "3G", "3L", "3J"],
+  "ABEFGHKL": ["3E", "3F", "3B", "3A", "3H", "3G", "3L", "3K"],
+  "ABEFGIJK": ["3E", "3F", "3B", "3A", "3I", "3G", "3J", "3K"],
+  "ABEFGIJL": ["3E", "3F", "3B", "3A", "3I", "3G", "3L", "3J"],
+  "ABEFGIKL": ["3E", "3F", "3B", "3A", "3I", "3G", "3L", "3K"],
+  "ABEFGJKL": ["3E", "3F", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABEFHIJK": ["3E", "3F", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABEFHIJL": ["3E", "3F", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABEFHIKL": ["3E", "3F", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABEFHJKL": ["3E", "3F", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABEFIJKL": ["3E", "3I", "3B", "3A", "3J", "3F", "3L", "3K"],
+  "ABEGHIJK": ["3E", "3G", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABEGHIJL": ["3E", "3G", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABEGHIKL": ["3E", "3G", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABEGHJKL": ["3E", "3G", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABEGIJKL": ["3E", "3I", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABEHIJKL": ["3E", "3I", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABFGHIJK": ["3F", "3G", "3B", "3A", "3I", "3H", "3J", "3K"],
+  "ABFGHIJL": ["3F", "3G", "3B", "3A", "3I", "3H", "3L", "3J"],
+  "ABFGHIKL": ["3F", "3G", "3B", "3A", "3I", "3H", "3L", "3K"],
+  "ABFGHJKL": ["3F", "3G", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABFGIJKL": ["3F", "3I", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ABFHIJKL": ["3F", "3I", "3B", "3A", "3J", "3H", "3L", "3K"],
+  "ABGHIJKL": ["3H", "3I", "3B", "3A", "3J", "3G", "3L", "3K"],
+  "ACDEFGHI": ["3C", "3E", "3F", "3A", "3H", "3G", "3D", "3I"],
+  "ACDEFGHJ": ["3C", "3E", "3F", "3A", "3H", "3G", "3D", "3J"],
+  "ACDEFGHK": ["3C", "3E", "3F", "3A", "3H", "3G", "3D", "3K"],
+  "ACDEFGHL": ["3C", "3E", "3F", "3D", "3A", "3G", "3L", "3H"],
+  "ACDEFGIJ": ["3C", "3E", "3F", "3A", "3I", "3G", "3D", "3J"],
+  "ACDEFGIK": ["3C", "3E", "3F", "3A", "3I", "3G", "3D", "3K"],
+  "ACDEFGIL": ["3C", "3E", "3F", "3D", "3A", "3G", "3L", "3I"],
+  "ACDEFGJK": ["3C", "3E", "3F", "3A", "3J", "3G", "3D", "3K"],
+  "ACDEFGJL": ["3C", "3E", "3F", "3D", "3A", "3G", "3L", "3J"],
+  "ACDEFGKL": ["3C", "3E", "3F", "3D", "3A", "3G", "3L", "3K"],
+  "ACDEFHIJ": ["3C", "3E", "3F", "3A", "3H", "3D", "3I", "3J"],
+  "ACDEFHIK": ["3H", "3E", "3F", "3C", "3A", "3D", "3I", "3K"],
+  "ACDEFHIL": ["3H", "3E", "3F", "3C", "3A", "3D", "3L", "3I"],
+  "ACDEFHJK": ["3H", "3J", "3E", "3C", "3A", "3F", "3D", "3K"],
+  "ACDEFHJL": ["3H", "3J", "3F", "3C", "3A", "3D", "3L", "3E"],
+  "ACDEFHKL": ["3H", "3E", "3F", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEFIJK": ["3C", "3J", "3E", "3D", "3A", "3F", "3I", "3K"],
+  "ACDEFIJL": ["3C", "3J", "3E", "3D", "3A", "3F", "3L", "3I"],
+  "ACDEFIKL": ["3C", "3E", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ACDEFJKL": ["3C", "3J", "3E", "3D", "3A", "3F", "3L", "3K"],
+  "ACDEGHIJ": ["3H", "3G", "3J", "3C", "3A", "3D", "3E", "3I"],
+  "ACDEGHIK": ["3H", "3G", "3E", "3C", "3A", "3D", "3I", "3K"],
+  "ACDEGHIL": ["3H", "3G", "3E", "3C", "3A", "3D", "3L", "3I"],
+  "ACDEGHJK": ["3H", "3G", "3J", "3C", "3A", "3D", "3E", "3K"],
+  "ACDEGHJL": ["3H", "3G", "3J", "3C", "3A", "3D", "3L", "3E"],
+  "ACDEGHKL": ["3H", "3G", "3E", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEGIJK": ["3E", "3G", "3J", "3C", "3A", "3D", "3I", "3K"],
+  "ACDEGIJL": ["3E", "3G", "3J", "3C", "3A", "3D", "3L", "3I"],
+  "ACDEGIKL": ["3E", "3G", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEGJKL": ["3E", "3G", "3J", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEHIJK": ["3H", "3J", "3E", "3C", "3A", "3D", "3I", "3K"],
+  "ACDEHIJL": ["3H", "3J", "3E", "3C", "3A", "3D", "3L", "3I"],
+  "ACDEHIKL": ["3H", "3E", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEHJKL": ["3H", "3J", "3E", "3C", "3A", "3D", "3L", "3K"],
+  "ACDEIJKL": ["3E", "3J", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACDFGHIJ": ["3H", "3G", "3J", "3C", "3A", "3F", "3D", "3I"],
+  "ACDFGHIK": ["3H", "3G", "3F", "3C", "3A", "3D", "3I", "3K"],
+  "ACDFGHIL": ["3H", "3G", "3F", "3C", "3A", "3D", "3L", "3I"],
+  "ACDFGHJK": ["3H", "3G", "3J", "3C", "3A", "3F", "3D", "3K"],
+  "ACDFGHJL": ["3C", "3G", "3J", "3D", "3A", "3F", "3L", "3H"],
+  "ACDFGHKL": ["3H", "3G", "3F", "3C", "3A", "3D", "3L", "3K"],
+  "ACDFGIJK": ["3C", "3G", "3J", "3D", "3A", "3F", "3I", "3K"],
+  "ACDFGIJL": ["3C", "3G", "3J", "3D", "3A", "3F", "3L", "3I"],
+  "ACDFGIKL": ["3C", "3G", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ACDFGJKL": ["3C", "3G", "3J", "3D", "3A", "3F", "3L", "3K"],
+  "ACDFHIJK": ["3H", "3J", "3F", "3C", "3A", "3D", "3I", "3K"],
+  "ACDFHIJL": ["3H", "3J", "3F", "3C", "3A", "3D", "3L", "3I"],
+  "ACDFHIKL": ["3H", "3F", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACDFHJKL": ["3H", "3J", "3F", "3C", "3A", "3D", "3L", "3K"],
+  "ACDFIJKL": ["3C", "3J", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ACDGHIJK": ["3H", "3G", "3J", "3C", "3A", "3D", "3I", "3K"],
+  "ACDGHIJL": ["3H", "3G", "3J", "3C", "3A", "3D", "3L", "3I"],
+  "ACDGHIKL": ["3H", "3G", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACDGHJKL": ["3H", "3G", "3J", "3C", "3A", "3D", "3L", "3K"],
+  "ACDGIJKL": ["3I", "3G", "3J", "3C", "3A", "3D", "3L", "3K"],
+  "ACDHIJKL": ["3H", "3J", "3I", "3C", "3A", "3D", "3L", "3K"],
+  "ACEFGHIJ": ["3H", "3G", "3J", "3C", "3A", "3F", "3E", "3I"],
+  "ACEFGHIK": ["3H", "3G", "3E", "3C", "3A", "3F", "3I", "3K"],
+  "ACEFGHIL": ["3H", "3G", "3E", "3C", "3A", "3F", "3L", "3I"],
+  "ACEFGHJK": ["3H", "3G", "3J", "3C", "3A", "3F", "3E", "3K"],
+  "ACEFGHJL": ["3H", "3G", "3J", "3C", "3A", "3F", "3L", "3E"],
+  "ACEFGHKL": ["3H", "3G", "3E", "3C", "3A", "3F", "3L", "3K"],
+  "ACEFGIJK": ["3E", "3G", "3J", "3C", "3A", "3F", "3I", "3K"],
+  "ACEFGIJL": ["3E", "3G", "3J", "3C", "3A", "3F", "3L", "3I"],
+  "ACEFGIKL": ["3E", "3G", "3I", "3C", "3A", "3F", "3L", "3K"],
+  "ACEFGJKL": ["3E", "3G", "3J", "3C", "3A", "3F", "3L", "3K"],
+  "ACEFHIJK": ["3H", "3J", "3E", "3C", "3A", "3F", "3I", "3K"],
+  "ACEFHIJL": ["3H", "3J", "3E", "3C", "3A", "3F", "3L", "3I"],
+  "ACEFHIKL": ["3H", "3E", "3I", "3C", "3A", "3F", "3L", "3K"],
+  "ACEFHJKL": ["3H", "3J", "3E", "3C", "3A", "3F", "3L", "3K"],
+  "ACEFIJKL": ["3E", "3J", "3I", "3C", "3A", "3F", "3L", "3K"],
+  "ACEGHIJK": ["3E", "3G", "3J", "3C", "3A", "3H", "3I", "3K"],
+  "ACEGHIJL": ["3E", "3G", "3J", "3C", "3A", "3H", "3L", "3I"],
+  "ACEGHIKL": ["3E", "3G", "3I", "3C", "3A", "3H", "3L", "3K"],
+  "ACEGHJKL": ["3E", "3G", "3J", "3C", "3A", "3H", "3L", "3K"],
+  "ACEGIJKL": ["3E", "3J", "3I", "3C", "3A", "3G", "3L", "3K"],
+  "ACEHIJKL": ["3E", "3J", "3I", "3C", "3A", "3H", "3L", "3K"],
+  "ACFGHIJK": ["3H", "3G", "3J", "3C", "3A", "3F", "3I", "3K"],
+  "ACFGHIJL": ["3H", "3G", "3J", "3C", "3A", "3F", "3L", "3I"],
+  "ACFGHIKL": ["3H", "3G", "3I", "3C", "3A", "3F", "3L", "3K"],
+  "ACFGHJKL": ["3H", "3G", "3J", "3C", "3A", "3F", "3L", "3K"],
+  "ACFGIJKL": ["3I", "3G", "3J", "3C", "3A", "3F", "3L", "3K"],
+  "ACFHIJKL": ["3H", "3J", "3I", "3C", "3A", "3F", "3L", "3K"],
+  "ACGHIJKL": ["3H", "3J", "3I", "3C", "3A", "3G", "3L", "3K"],
+  "ADEFGHIJ": ["3H", "3G", "3J", "3D", "3A", "3F", "3E", "3I"],
+  "ADEFGHIK": ["3H", "3G", "3E", "3D", "3A", "3F", "3I", "3K"],
+  "ADEFGHIL": ["3H", "3G", "3E", "3D", "3A", "3F", "3L", "3I"],
+  "ADEFGHJK": ["3H", "3G", "3J", "3D", "3A", "3F", "3E", "3K"],
+  "ADEFGHJL": ["3H", "3G", "3J", "3D", "3A", "3F", "3L", "3E"],
+  "ADEFGHKL": ["3H", "3G", "3E", "3D", "3A", "3F", "3L", "3K"],
+  "ADEFGIJK": ["3E", "3G", "3J", "3D", "3A", "3F", "3I", "3K"],
+  "ADEFGIJL": ["3E", "3G", "3J", "3D", "3A", "3F", "3L", "3I"],
+  "ADEFGIKL": ["3E", "3G", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ADEFGJKL": ["3E", "3G", "3J", "3D", "3A", "3F", "3L", "3K"],
+  "ADEFHIJK": ["3H", "3J", "3E", "3D", "3A", "3F", "3I", "3K"],
+  "ADEFHIJL": ["3H", "3J", "3E", "3D", "3A", "3F", "3L", "3I"],
+  "ADEFHIKL": ["3H", "3E", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ADEFHJKL": ["3H", "3J", "3E", "3D", "3A", "3F", "3L", "3K"],
+  "ADEFIJKL": ["3E", "3J", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ADEGHIJK": ["3E", "3G", "3J", "3D", "3A", "3H", "3I", "3K"],
+  "ADEGHIJL": ["3E", "3G", "3J", "3D", "3A", "3H", "3L", "3I"],
+  "ADEGHIKL": ["3E", "3G", "3I", "3D", "3A", "3H", "3L", "3K"],
+  "ADEGHJKL": ["3E", "3G", "3J", "3D", "3A", "3H", "3L", "3K"],
+  "ADEGIJKL": ["3E", "3J", "3I", "3D", "3A", "3G", "3L", "3K"],
+  "ADEHIJKL": ["3E", "3J", "3I", "3D", "3A", "3H", "3L", "3K"],
+  "ADFGHIJK": ["3H", "3G", "3J", "3D", "3A", "3F", "3I", "3K"],
+  "ADFGHIJL": ["3H", "3G", "3J", "3D", "3A", "3F", "3L", "3I"],
+  "ADFGHIKL": ["3H", "3G", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ADFGHJKL": ["3H", "3G", "3J", "3D", "3A", "3F", "3L", "3K"],
+  "ADFGIJKL": ["3I", "3G", "3J", "3D", "3A", "3F", "3L", "3K"],
+  "ADFHIJKL": ["3H", "3J", "3I", "3D", "3A", "3F", "3L", "3K"],
+  "ADGHIJKL": ["3H", "3J", "3I", "3D", "3A", "3G", "3L", "3K"],
+  "AEFGHIJK": ["3E", "3G", "3J", "3F", "3A", "3H", "3I", "3K"],
+  "AEFGHIJL": ["3E", "3G", "3J", "3F", "3A", "3H", "3L", "3I"],
+  "AEFGHIKL": ["3E", "3G", "3I", "3F", "3A", "3H", "3L", "3K"],
+  "AEFGHJKL": ["3E", "3G", "3J", "3F", "3A", "3H", "3L", "3K"],
+  "AEFGIJKL": ["3E", "3J", "3I", "3F", "3A", "3G", "3L", "3K"],
+  "AEFHIJKL": ["3E", "3J", "3I", "3F", "3A", "3H", "3L", "3K"],
+  "AEGHIJKL": ["3E", "3J", "3I", "3A", "3H", "3G", "3L", "3K"],
+  "AFGHIJKL": ["3H", "3J", "3I", "3F", "3A", "3G", "3L", "3K"],
+  "BCDEFGHI": ["3C", "3G", "3B", "3D", "3H", "3F", "3E", "3I"],
+  "BCDEFGHJ": ["3H", "3G", "3B", "3C", "3J", "3F", "3D", "3E"],
+  "BCDEFGHK": ["3C", "3G", "3B", "3D", "3H", "3F", "3E", "3K"],
+  "BCDEFGHL": ["3C", "3G", "3B", "3D", "3H", "3F", "3L", "3E"],
+  "BCDEFGIJ": ["3C", "3G", "3B", "3D", "3J", "3F", "3E", "3I"],
+  "BCDEFGIK": ["3C", "3G", "3B", "3D", "3E", "3F", "3I", "3K"],
+  "BCDEFGIL": ["3C", "3G", "3B", "3D", "3E", "3F", "3L", "3I"],
+  "BCDEFGJK": ["3C", "3G", "3B", "3D", "3J", "3F", "3E", "3K"],
+  "BCDEFGJL": ["3C", "3G", "3B", "3D", "3J", "3F", "3L", "3E"],
+  "BCDEFGKL": ["3C", "3G", "3B", "3D", "3E", "3F", "3L", "3K"],
+  "BCDEFHIJ": ["3C", "3J", "3B", "3D", "3H", "3F", "3E", "3I"],
+  "BCDEFHIK": ["3C", "3E", "3B", "3D", "3H", "3F", "3I", "3K"],
+  "BCDEFHIL": ["3C", "3E", "3B", "3D", "3H", "3F", "3L", "3I"],
+  "BCDEFHJK": ["3C", "3J", "3B", "3D", "3H", "3F", "3E", "3K"],
+  "BCDEFHJL": ["3C", "3J", "3B", "3D", "3H", "3F", "3L", "3E"],
+  "BCDEFHKL": ["3C", "3E", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BCDEFIJK": ["3C", "3J", "3B", "3D", "3E", "3F", "3I", "3K"],
+  "BCDEFIJL": ["3C", "3J", "3B", "3D", "3E", "3F", "3L", "3I"],
+  "BCDEFIKL": ["3C", "3E", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BCDEFJKL": ["3C", "3J", "3B", "3D", "3E", "3F", "3L", "3K"],
+  "BCDEGHIJ": ["3H", "3G", "3B", "3C", "3J", "3D", "3E", "3I"],
+  "BCDEGHIK": ["3E", "3G", "3B", "3C", "3H", "3D", "3I", "3K"],
+  "BCDEGHIL": ["3E", "3G", "3B", "3C", "3H", "3D", "3L", "3I"],
+  "BCDEGHJK": ["3H", "3G", "3B", "3C", "3J", "3D", "3E", "3K"],
+  "BCDEGHJL": ["3H", "3G", "3B", "3C", "3J", "3D", "3L", "3E"],
+  "BCDEGHKL": ["3E", "3G", "3B", "3C", "3H", "3D", "3L", "3K"],
+  "BCDEGIJK": ["3E", "3G", "3B", "3C", "3J", "3D", "3I", "3K"],
+  "BCDEGIJL": ["3E", "3G", "3B", "3C", "3J", "3D", "3L", "3I"],
+  "BCDEGIKL": ["3E", "3G", "3B", "3C", "3I", "3D", "3L", "3K"],
+  "BCDEGJKL": ["3E", "3G", "3B", "3C", "3J", "3D", "3L", "3K"],
+  "BCDEHIJK": ["3E", "3J", "3B", "3C", "3H", "3D", "3I", "3K"],
+  "BCDEHIJL": ["3E", "3J", "3B", "3C", "3H", "3D", "3L", "3I"],
+  "BCDEHIKL": ["3E", "3I", "3B", "3C", "3H", "3D", "3L", "3K"],
+  "BCDEHJKL": ["3E", "3J", "3B", "3C", "3H", "3D", "3L", "3K"],
+  "BCDEIJKL": ["3E", "3J", "3B", "3C", "3I", "3D", "3L", "3K"],
+  "BCDFGHIJ": ["3H", "3G", "3B", "3C", "3J", "3F", "3D", "3I"],
+  "BCDFGHIK": ["3C", "3G", "3B", "3D", "3H", "3F", "3I", "3K"],
+  "BCDFGHIL": ["3C", "3G", "3B", "3D", "3H", "3F", "3L", "3I"],
+  "BCDFGHJK": ["3H", "3G", "3B", "3C", "3J", "3F", "3D", "3K"],
+  "BCDFGHJL": ["3C", "3G", "3B", "3D", "3H", "3F", "3L", "3J"],
+  "BCDFGHKL": ["3C", "3G", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BCDFGIJK": ["3C", "3G", "3B", "3D", "3J", "3F", "3I", "3K"],
+  "BCDFGIJL": ["3C", "3G", "3B", "3D", "3J", "3F", "3L", "3I"],
+  "BCDFGIKL": ["3C", "3G", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BCDFGJKL": ["3C", "3G", "3B", "3D", "3J", "3F", "3L", "3K"],
+  "BCDFHIJK": ["3C", "3J", "3B", "3D", "3H", "3F", "3I", "3K"],
+  "BCDFHIJL": ["3C", "3J", "3B", "3D", "3H", "3F", "3L", "3I"],
+  "BCDFHIKL": ["3C", "3I", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BCDFHJKL": ["3C", "3J", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BCDFIJKL": ["3C", "3J", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BCDGHIJK": ["3H", "3G", "3B", "3C", "3J", "3D", "3I", "3K"],
+  "BCDGHIJL": ["3H", "3G", "3B", "3C", "3J", "3D", "3L", "3I"],
+  "BCDGHIKL": ["3H", "3G", "3B", "3C", "3I", "3D", "3L", "3K"],
+  "BCDGHJKL": ["3H", "3G", "3B", "3C", "3J", "3D", "3L", "3K"],
+  "BCDGIJKL": ["3I", "3G", "3B", "3C", "3J", "3D", "3L", "3K"],
+  "BCDHIJKL": ["3H", "3J", "3B", "3C", "3I", "3D", "3L", "3K"],
+  "BCEFGHIJ": ["3H", "3G", "3B", "3C", "3J", "3F", "3E", "3I"],
+  "BCEFGHIK": ["3E", "3G", "3B", "3C", "3H", "3F", "3I", "3K"],
+  "BCEFGHIL": ["3E", "3G", "3B", "3C", "3H", "3F", "3L", "3I"],
+  "BCEFGHJK": ["3H", "3G", "3B", "3C", "3J", "3F", "3E", "3K"],
+  "BCEFGHJL": ["3H", "3G", "3B", "3C", "3J", "3F", "3L", "3E"],
+  "BCEFGHKL": ["3E", "3G", "3B", "3C", "3H", "3F", "3L", "3K"],
+  "BCEFGIJK": ["3E", "3G", "3B", "3C", "3J", "3F", "3I", "3K"],
+  "BCEFGIJL": ["3E", "3G", "3B", "3C", "3J", "3F", "3L", "3I"],
+  "BCEFGIKL": ["3E", "3G", "3B", "3C", "3I", "3F", "3L", "3K"],
+  "BCEFGJKL": ["3E", "3G", "3B", "3C", "3J", "3F", "3L", "3K"],
+  "BCEFHIJK": ["3E", "3J", "3B", "3C", "3H", "3F", "3I", "3K"],
+  "BCEFHIJL": ["3E", "3J", "3B", "3C", "3H", "3F", "3L", "3I"],
+  "BCEFHIKL": ["3E", "3I", "3B", "3C", "3H", "3F", "3L", "3K"],
+  "BCEFHJKL": ["3E", "3J", "3B", "3C", "3H", "3F", "3L", "3K"],
+  "BCEFIJKL": ["3E", "3J", "3B", "3C", "3I", "3F", "3L", "3K"],
+  "BCEGHIJK": ["3E", "3J", "3B", "3C", "3H", "3G", "3I", "3K"],
+  "BCEGHIJL": ["3E", "3J", "3B", "3C", "3H", "3G", "3L", "3I"],
+  "BCEGHIKL": ["3E", "3G", "3B", "3C", "3I", "3H", "3L", "3K"],
+  "BCEGHJKL": ["3E", "3J", "3B", "3C", "3H", "3G", "3L", "3K"],
+  "BCEGIJKL": ["3E", "3J", "3B", "3C", "3I", "3G", "3L", "3K"],
+  "BCEHIJKL": ["3E", "3J", "3B", "3C", "3I", "3H", "3L", "3K"],
+  "BCFGHIJK": ["3H", "3G", "3B", "3C", "3J", "3F", "3I", "3K"],
+  "BCFGHIJL": ["3H", "3G", "3B", "3C", "3J", "3F", "3L", "3I"],
+  "BCFGHIKL": ["3H", "3G", "3B", "3C", "3I", "3F", "3L", "3K"],
+  "BCFGHJKL": ["3H", "3G", "3B", "3C", "3J", "3F", "3L", "3K"],
+  "BCFGIJKL": ["3I", "3G", "3B", "3C", "3J", "3F", "3L", "3K"],
+  "BCFHIJKL": ["3H", "3J", "3B", "3C", "3I", "3F", "3L", "3K"],
+  "BCGHIJKL": ["3H", "3J", "3B", "3C", "3I", "3G", "3L", "3K"],
+  "BDEFGHIJ": ["3H", "3G", "3B", "3D", "3J", "3F", "3E", "3I"],
+  "BDEFGHIK": ["3E", "3G", "3B", "3D", "3H", "3F", "3I", "3K"],
+  "BDEFGHIL": ["3E", "3G", "3B", "3D", "3H", "3F", "3L", "3I"],
+  "BDEFGHJK": ["3H", "3G", "3B", "3D", "3J", "3F", "3E", "3K"],
+  "BDEFGHJL": ["3H", "3G", "3B", "3D", "3J", "3F", "3L", "3E"],
+  "BDEFGHKL": ["3E", "3G", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BDEFGIJK": ["3E", "3G", "3B", "3D", "3J", "3F", "3I", "3K"],
+  "BDEFGIJL": ["3E", "3G", "3B", "3D", "3J", "3F", "3L", "3I"],
+  "BDEFGIKL": ["3E", "3G", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BDEFGJKL": ["3E", "3G", "3B", "3D", "3J", "3F", "3L", "3K"],
+  "BDEFHIJK": ["3E", "3J", "3B", "3D", "3H", "3F", "3I", "3K"],
+  "BDEFHIJL": ["3E", "3J", "3B", "3D", "3H", "3F", "3L", "3I"],
+  "BDEFHIKL": ["3E", "3I", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BDEFHJKL": ["3E", "3J", "3B", "3D", "3H", "3F", "3L", "3K"],
+  "BDEFIJKL": ["3E", "3J", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BDEGHIJK": ["3E", "3J", "3B", "3D", "3H", "3G", "3I", "3K"],
+  "BDEGHIJL": ["3E", "3J", "3B", "3D", "3H", "3G", "3L", "3I"],
+  "BDEGHIKL": ["3E", "3G", "3B", "3D", "3I", "3H", "3L", "3K"],
+  "BDEGHJKL": ["3E", "3J", "3B", "3D", "3H", "3G", "3L", "3K"],
+  "BDEGIJKL": ["3E", "3J", "3B", "3D", "3I", "3G", "3L", "3K"],
+  "BDEHIJKL": ["3E", "3J", "3B", "3D", "3I", "3H", "3L", "3K"],
+  "BDFGHIJK": ["3H", "3G", "3B", "3D", "3J", "3F", "3I", "3K"],
+  "BDFGHIJL": ["3H", "3G", "3B", "3D", "3J", "3F", "3L", "3I"],
+  "BDFGHIKL": ["3H", "3G", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BDFGHJKL": ["3H", "3G", "3B", "3D", "3J", "3F", "3L", "3K"],
+  "BDFGIJKL": ["3I", "3G", "3B", "3D", "3J", "3F", "3L", "3K"],
+  "BDFHIJKL": ["3H", "3J", "3B", "3D", "3I", "3F", "3L", "3K"],
+  "BDGHIJKL": ["3H", "3J", "3B", "3D", "3I", "3G", "3L", "3K"],
+  "BEFGHIJK": ["3E", "3J", "3B", "3F", "3H", "3G", "3I", "3K"],
+  "BEFGHIJL": ["3E", "3J", "3B", "3F", "3H", "3G", "3L", "3I"],
+  "BEFGHIKL": ["3E", "3G", "3B", "3F", "3I", "3H", "3L", "3K"],
+  "BEFGHJKL": ["3E", "3J", "3B", "3F", "3H", "3G", "3L", "3K"],
+  "BEFGIJKL": ["3E", "3J", "3B", "3F", "3I", "3G", "3L", "3K"],
+  "BEFHIJKL": ["3E", "3J", "3B", "3F", "3I", "3H", "3L", "3K"],
+  "BEGHIJKL": ["3E", "3J", "3I", "3B", "3H", "3G", "3L", "3K"],
+  "BFGHIJKL": ["3H", "3J", "3B", "3F", "3I", "3G", "3L", "3K"],
+  "CDEFGHIJ": ["3C", "3G", "3J", "3D", "3H", "3F", "3E", "3I"],
+  "CDEFGHIK": ["3C", "3G", "3E", "3D", "3H", "3F", "3I", "3K"],
+  "CDEFGHIL": ["3C", "3G", "3E", "3D", "3H", "3F", "3L", "3I"],
+  "CDEFGHJK": ["3C", "3G", "3J", "3D", "3H", "3F", "3E", "3K"],
+  "CDEFGHJL": ["3C", "3G", "3J", "3D", "3H", "3F", "3L", "3E"],
+  "CDEFGHKL": ["3C", "3G", "3E", "3D", "3H", "3F", "3L", "3K"],
+  "CDEFGIJK": ["3C", "3G", "3E", "3D", "3J", "3F", "3I", "3K"],
+  "CDEFGIJL": ["3C", "3G", "3E", "3D", "3J", "3F", "3L", "3I"],
+  "CDEFGIKL": ["3C", "3G", "3E", "3D", "3I", "3F", "3L", "3K"],
+  "CDEFGJKL": ["3C", "3G", "3E", "3D", "3J", "3F", "3L", "3K"],
+  "CDEFHIJK": ["3C", "3J", "3E", "3D", "3H", "3F", "3I", "3K"],
+  "CDEFHIJL": ["3C", "3J", "3E", "3D", "3H", "3F", "3L", "3I"],
+  "CDEFHIKL": ["3C", "3E", "3I", "3D", "3H", "3F", "3L", "3K"],
+  "CDEFHJKL": ["3C", "3J", "3E", "3D", "3H", "3F", "3L", "3K"],
+  "CDEFIJKL": ["3C", "3J", "3E", "3D", "3I", "3F", "3L", "3K"],
+  "CDEGHIJK": ["3E", "3G", "3J", "3C", "3H", "3D", "3I", "3K"],
+  "CDEGHIJL": ["3E", "3G", "3J", "3C", "3H", "3D", "3L", "3I"],
+  "CDEGHIKL": ["3E", "3G", "3I", "3C", "3H", "3D", "3L", "3K"],
+  "CDEGHJKL": ["3E", "3G", "3J", "3C", "3H", "3D", "3L", "3K"],
+  "CDEGIJKL": ["3E", "3G", "3I", "3C", "3J", "3D", "3L", "3K"],
+  "CDEHIJKL": ["3E", "3J", "3I", "3C", "3H", "3D", "3L", "3K"],
+  "CDFGHIJK": ["3C", "3G", "3J", "3D", "3H", "3F", "3I", "3K"],
+  "CDFGHIJL": ["3C", "3G", "3J", "3D", "3H", "3F", "3L", "3I"],
+  "CDFGHIKL": ["3C", "3G", "3I", "3D", "3H", "3F", "3L", "3K"],
+  "CDFGHJKL": ["3C", "3G", "3J", "3D", "3H", "3F", "3L", "3K"],
+  "CDFGIJKL": ["3C", "3G", "3I", "3D", "3J", "3F", "3L", "3K"],
+  "CDFHIJKL": ["3C", "3J", "3I", "3D", "3H", "3F", "3L", "3K"],
+  "CDGHIJKL": ["3H", "3G", "3I", "3C", "3J", "3D", "3L", "3K"],
+  "CEFGHIJK": ["3E", "3G", "3J", "3C", "3H", "3F", "3I", "3K"],
+  "CEFGHIJL": ["3E", "3G", "3J", "3C", "3H", "3F", "3L", "3I"],
+  "CEFGHIKL": ["3E", "3G", "3I", "3C", "3H", "3F", "3L", "3K"],
+  "CEFGHJKL": ["3E", "3G", "3J", "3C", "3H", "3F", "3L", "3K"],
+  "CEFGIJKL": ["3E", "3G", "3I", "3C", "3J", "3F", "3L", "3K"],
+  "CEFHIJKL": ["3E", "3J", "3I", "3C", "3H", "3F", "3L", "3K"],
+  "CEGHIJKL": ["3E", "3J", "3I", "3C", "3H", "3G", "3L", "3K"],
+  "CFGHIJKL": ["3H", "3G", "3I", "3C", "3J", "3F", "3L", "3K"],
+  "DEFGHIJK": ["3E", "3G", "3J", "3D", "3H", "3F", "3I", "3K"],
+  "DEFGHIJL": ["3E", "3G", "3J", "3D", "3H", "3F", "3L", "3I"],
+  "DEFGHIKL": ["3E", "3G", "3I", "3D", "3H", "3F", "3L", "3K"],
+  "DEFGHJKL": ["3E", "3G", "3J", "3D", "3H", "3F", "3L", "3K"],
+  "DEFGIJKL": ["3E", "3G", "3I", "3D", "3J", "3F", "3L", "3K"],
+  "DEFHIJKL": ["3E", "3J", "3I", "3D", "3H", "3F", "3L", "3K"],
+  "DEGHIJKL": ["3E", "3J", "3I", "3D", "3H", "3G", "3L", "3K"],
+  "DFGHIJKL": ["3H", "3G", "3I", "3D", "3J", "3F", "3L", "3K"],
+  "EFGHIJKL": ["3E", "3J", "3I", "3F", "3H", "3G", "3L", "3K"]
+};
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const GROUPS = {
+  A:['Mexico','South Africa','South Korea','Czechia'],
+  B:['Canada','Bosnia','Qatar','Switzerland'],
+  C:['Brazil','Morocco','Scotland','Haiti'],
+  D:['USA','Australia','Tunisia','Paraguay'],
+  E:['Germany','Ivory Coast','Ecuador','Curacao'],
+  F:['Netherlands','Japan','Sweden','Tunisia'],
+  G:['Belgium','Egypt','Iran','New Zealand'],
+  H:['Spain','Cape Verde','Saudi Arabia','Uruguay'],
+  I:['France','Iraq','Senegal','Norway'],
+  J:['Argentina','Algeria','Austria','Jordan'],
+  K:['Portugal','DR Congo','Uzbekistan','Colombia'],
+  L:['England','Croatia','Ghana','Panama']
+};
+const GL = Object.keys(GROUPS);
+const ALL_TEAMS = GL.flatMap(g => GROUPS[g]);
+function teamGroup(t){ return GL.find(g => GROUPS[g].includes(t)) || ''; }
+
+// State
+const S = {
+  name:'', champion:'',
+  groups:{},   // g -> {first, second}
+  best3:[],    // array of 8 team names in order (index 0 = best)
+  bracket:{}   // matchId -> winner
+};
+GL.forEach(g => S.groups[g] = {first:'', second:''});
+for(let i=0;i<8;i++) S.best3.push('');
+
+// ── BUILD CHAMPION DROPDOWN ───────────────────────────────────────────────────
+function buildChampion(){
+  const sel = document.getElementById('champ');
+  GL.forEach(g => {
+    const og = document.createElement('optgroup');
+    og.label = 'Group '+g;
+    GROUPS[g].forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; og.appendChild(o); });
+    sel.appendChild(og);
+  });
+}
+
+// ── BUILD GROUPS ──────────────────────────────────────────────────────────────
+function buildGroups(){
+  const grid = document.getElementById('groupsGrid');
+  GL.forEach(g => {
+    const teams = GROUPS[g];
+    const card = document.createElement('div');
+    card.className = 'grp-card';
+    const opts = `<option value="">— select —</option>${teams.map(t=>`<option value="${t}">${t}</option>`).join('')}`;
+    card.innerHTML = `
+      <div class="grp-lbl">Group ${g}</div>
+      <div class="grp-teams">${teams.join(' · ')}</div>
+      <div class="pick-row">
+        <span class="pick-lbl">🥇 1st</span>
+        <select id="g${g}1" onchange="onGrp('${g}')">${opts}</select>
+      </div>
+      <div class="pick-row">
+        <span class="pick-lbl sec">🥈 2nd</span>
+        <select id="g${g}2" onchange="onGrp('${g}')">${opts}</select>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function onGrp(g){
+  S.groups[g] = { first: document.getElementById(`g${g}1`).value, second: document.getElementById(`g${g}2`).value };
+  updateBracket(); updateProg();
+}
+
+// ── BUILD BEST 3RD ────────────────────────────────────────────────────────────
+function buildBest3(){
+  const grid = document.getElementById('b3grid');
+  for(let i=0;i<8;i++){
+    const slot = document.createElement('div');
+    slot.className = 'b3-slot';
+    slot.id = `b3slot${i}`;
+    // Build optgroups
+    const optgroups = GL.map(g =>
+      `<optgroup label="Group ${g}">${GROUPS[g].map(t=>`<option value="${t}">${t}</option>`).join('')}</optgroup>`
+    ).join('');
+    slot.innerHTML = `
+      <div class="slot-num">Best 3rd #${i+1}</div>
+      <select id="b3s${i}" onchange="onB3(${i})">
+        <option value="">— select —</option>
+        ${optgroups}
+      </select>`;
+    grid.appendChild(slot);
+  }
+}
+
+function onB3(changedIdx){
+  // Read all 8 slots
+  for(let i=0;i<8;i++) S.best3[i] = document.getElementById(`b3s${i}`).value;
+  refreshB3Dropdowns(changedIdx);
+  updateB3Counter();
+  updateBracket();
+  updateProg();
+}
+
+function refreshB3Dropdowns(changedIdx){
+  // For each slot, disable options that are already picked in OTHER slots
+  const picked = S.best3.map((t,i) => ({t, i})).filter(x => x.t);
+  const pickedGroups = new Set(picked.map(x => teamGroup(x.t)));
+
+  for(let i=0;i<8;i++){
+    const sel = document.getElementById(`b3s${i}`);
+    const myVal = S.best3[i];
+    const myGroup = teamGroup(myVal);
+
+    // Rebuild options
+    sel.innerHTML = `<option value="">— select —</option>`;
+    GL.forEach(g => {
+      const og = document.createElement('optgroup');
+      og.label = 'Group '+g;
+      GROUPS[g].forEach(t => {
+        const isPickedElsewhere = S.best3.some((pt, pi) => pi !== i && pt === t);
+        // Also disable teams from groups already picked by other slots
+        const grpPickedElsewhere = pickedGroups.has(g) && g !== myGroup;
+        const o = document.createElement('option');
+        o.value = t; o.textContent = t;
+        if(t === myVal) o.selected = true;
+        if(isPickedElsewhere || grpPickedElsewhere) o.disabled = true;
+        og.appendChild(o);
+      });
+      sel.appendChild(og);
+    });
+
+    // Style
+    const slot = document.getElementById(`b3slot${i}`);
+    sel.className = myVal ? 'picked' : '';
+    slot.className = 'b3-slot' + (myVal ? ' filled' : '');
+  }
+}
+
+function updateB3Counter(){
+  const filled = S.best3.filter(t=>t).length;
+  // Check for duplicate groups
+  const usedGroups = S.best3.filter(t=>t).map(t=>teamGroup(t));
+  const dupGroups = usedGroups.length !== new Set(usedGroups).size;
+
+  const counter = document.getElementById('b3counter');
+  const txt = document.getElementById('b3txt');
+  if(dupGroups){
+    counter.className='b3-counter warn';
+    txt.textContent='⚠️ Two picks from the same group — each must be from a different group';
+  } else if(filled===8){
+    counter.className='b3-counter ok';
+    txt.textContent='✅ Perfect! 8 teams selected';
+  } else {
+    counter.className='b3-counter partial';
+    txt.textContent=`${filled}/8 selected — pick ${8-filled} more`;
+  }
+}
+
+// ── BRACKET ───────────────────────────────────────────────────────────────────
+// Best 3rd slot resolution
+const SLOT_IDX = {M79:0,M85:1,M81:2,M74:3,M82:4,M77:5,M87:6,M80:7};
+
+function getSlotTeam(mid){
+  // Build key from selected best3 teams' groups (sorted)
+  const usedGroups = S.best3.filter(t=>t).map(t=>teamGroup(t));
+  const uniqueGroups = [...new Set(usedGroups)].sort();
+  if(uniqueGroups.length !== 8) return '';
+  const key = uniqueGroups.join('');
+  const combo = FIFA_COMBOS[key];
+  if(!combo) return '';
+  const idx = SLOT_IDX[mid];
+  const grpLetter = combo[idx]?.replace('3','');
+  if(!grpLetter) return '';
+  // Return the team from that group that is in best3
+  return S.best3.find(t => teamGroup(t) === grpLetter) || '';
+}
+
+function g1(g){ return S.groups[g]?.first || ''; }
+function g2(g){ return S.groups[g]?.second || ''; }
+function gw(mid){ return S.bracket[mid] || ''; }
+
+const ROUNDS = [
+  {label:'ROUND OF 32', pts:3, matches:[
+    {id:'M73',t1:()=>g2('A'),t2:()=>g2('B')},
+    {id:'M74',t1:()=>g1('E'),t2:()=>getSlotTeam('M74'),b3:true},
+    {id:'M75',t1:()=>g1('F'),t2:()=>g2('C')},
+    {id:'M76',t1:()=>g1('C'),t2:()=>g2('F')},
+    {id:'M77',t1:()=>g1('I'),t2:()=>getSlotTeam('M77'),b3:true},
+    {id:'M78',t1:()=>g2('E'),t2:()=>g2('I')},
+    {id:'M79',t1:()=>g1('A'),t2:()=>getSlotTeam('M79'),b3:true},
+    {id:'M80',t1:()=>g1('L'),t2:()=>getSlotTeam('M80'),b3:true},
+    {id:'M81',t1:()=>g1('D'),t2:()=>getSlotTeam('M81'),b3:true},
+    {id:'M82',t1:()=>g1('G'),t2:()=>getSlotTeam('M82'),b3:true},
+    {id:'M83',t1:()=>g2('K'),t2:()=>g2('L')},
+    {id:'M84',t1:()=>g1('H'),t2:()=>g2('J')},
+    {id:'M85',t1:()=>g1('B'),t2:()=>getSlotTeam('M85'),b3:true},
+    {id:'M86',t1:()=>g1('J'),t2:()=>g2('H')},
+    {id:'M87',t1:()=>g1('K'),t2:()=>getSlotTeam('M87'),b3:true},
+    {id:'M88',t1:()=>g2('D'),t2:()=>g2('G')},
+  ]},
+  {label:'ROUND OF 16', pts:4, matches:[
+    {id:'M89',t1:()=>gw('M73'),t2:()=>gw('M77')},
+    {id:'M90',t1:()=>gw('M74'),t2:()=>gw('M75')},
+    {id:'M91',t1:()=>gw('M76'),t2:()=>gw('M78')},
+    {id:'M92',t1:()=>gw('M79'),t2:()=>gw('M80')},
+    {id:'M93',t1:()=>gw('M83'),t2:()=>gw('M84')},
+    {id:'M94',t1:()=>gw('M81'),t2:()=>gw('M82')},
+    {id:'M95',t1:()=>gw('M86'),t2:()=>gw('M88')},
+    {id:'M96',t1:()=>gw('M85'),t2:()=>gw('M87')},
+  ]},
+  {label:'QUARTER FINALS', pts:5, matches:[
+    {id:'QF1',t1:()=>gw('M89'),t2:()=>gw('M90')},
+    {id:'QF2',t1:()=>gw('M93'),t2:()=>gw('M94')},
+    {id:'QF3',t1:()=>gw('M91'),t2:()=>gw('M92')},
+    {id:'QF4',t1:()=>gw('M95'),t2:()=>gw('M96')},
+  ]},
+  {label:'SEMI FINALS', pts:7, matches:[
+    {id:'SF1',t1:()=>gw('QF1'),t2:()=>gw('QF2')},
+    {id:'SF2',t1:()=>gw('QF3'),t2:()=>gw('QF4')},
+  ]},
+  {label:'🏆 FINAL', pts:10, matches:[
+    {id:'FIN',t1:()=>gw('SF1'),t2:()=>gw('SF2')},
+  ]},
+];
+
+function buildBracket(){
+  const cont = document.getElementById('bracketCont');
+  ROUNDS.forEach(({label,pts,matches}) => {
+    const hdr = document.createElement('div');
+    hdr.className='rnd-hdr';
+    hdr.textContent=`${label}  ·  ${pts} pts`;
+    cont.appendChild(hdr);
+    matches.forEach(m => {
+      const row = document.createElement('div');
+      row.className='match'; row.id=`m_${m.id}`;
+      row.innerHTML=`
+        <span class="mid">${m.id}</span>
+        <div class="team-box tbd" id="t1_${m.id}">TBD</div>
+        <div class="vs">vs</div>
+        <div class="team-box tbd${m.b3?' b3t':''}" id="t2_${m.id}">TBD</div>
+        <div class="wcol"><select id="w_${m.id}" onchange="onWin('${m.id}')">
+          <option value="">— winner —</option></select></div>
+        <div class="pcol">${pts}p</div>`;
+      cont.appendChild(row);
+    });
+  });
+}
+
+function updateBracket(){
+  ROUNDS.forEach(({matches}) => {
+    matches.forEach(m => {
+      const t1=m.t1(), t2=m.t2();
+      const t1el=document.getElementById(`t1_${m.id}`);
+      const t2el=document.getElementById(`t2_${m.id}`);
+      const wsel=document.getElementById(`w_${m.id}`);
+      if(t1el){ t1el.textContent=t1||'TBD'; t1el.className='team-box '+(t1?'ok':'tbd'); }
+      if(t2el){ t2el.textContent=t2||'TBD'; t2el.className='team-box '+(t2?'ok':'tbd')+(m.b3?' b3t':''); }
+      if(wsel){
+        const cur=S.bracket[m.id]||'';
+        wsel.innerHTML='<option value="">— winner —</option>';
+        [t1,t2].filter(Boolean).forEach(t => {
+          const o=document.createElement('option'); o.value=t; o.textContent=t;
+          if(t===cur) o.selected=true;
+          wsel.appendChild(o);
+        });
+        if(cur && cur!==t1 && cur!==t2){ S.bracket[m.id]=''; wsel.value=''; }
+      }
+    });
+  });
+  const fin=gw('FIN');
+  const d=document.getElementById('champDisp');
+  if(d) d.textContent=fin||'—';
+}
+
+function onWin(mid){ S.bracket[mid]=document.getElementById(`w_${mid}`).value; updateBracket(); updateProg(); }
+function updateChamp(){ S.champion=document.getElementById('champ').value; }
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function updateProg(){
+  let f=0,t=0;
+  if(document.getElementById('pname').value) f++;
+  if(document.getElementById('champ').value) f++;
+  t+=2;
+  GL.forEach(g=>{ if(S.groups[g].first) f++; if(S.groups[g].second) f++; t+=2; });
+  f+=S.best3.filter(x=>x).length; t+=8;
+  ROUNDS.flatMap(r=>r.matches).forEach(m=>{
+    if(m.t1()&&m.t2()){ if(S.bracket[m.id]) f++; t++; }
+  });
+  document.getElementById('prog').style.width=Math.round(f/t*100)+'%';
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────────────────────────
+const SK='wc2026_v2';
+function saveDraft(){
+  const data={
+    name:document.getElementById('pname').value,
+    champion:document.getElementById('champ').value,
+    groups:S.groups, best3:S.best3, bracket:S.bracket,
+    saved:new Date().toISOString()
+  };
+  try{
+    localStorage.setItem(SK,JSON.stringify(data));
+    showNote('✅ Draft saved!','ok');
+  }catch(e){ showNote('⚠️ Could not save','warn'); }
+}
+
+function loadDraft(){
+  try{
+    const raw=localStorage.getItem(SK);
+    if(!raw){ showNote('No saved draft found','warn'); return; }
+    const d=JSON.parse(raw);
+    document.getElementById('pname').value=d.name||'';
+    document.getElementById('champ').value=d.champion||'';
+    if(d.groups) Object.assign(S.groups,d.groups);
+    if(d.best3) { for(let i=0;i<8;i++) S.best3[i]=d.best3[i]||''; }
+    if(d.bracket) Object.assign(S.bracket,d.bracket);
+    // Restore group selects
+    GL.forEach(g=>{
+      const s1=document.getElementById(`g${g}1`), s2=document.getElementById(`g${g}2`);
+      if(s1) s1.value=S.groups[g].first||'';
+      if(s2) s2.value=S.groups[g].second||'';
+    });
+    // Restore best3
+    for(let i=0;i<8;i++){
+      const sel=document.getElementById(`b3s${i}`);
+      if(sel) sel.value=S.best3[i]||'';
+    }
+    refreshB3Dropdowns(-1);
+    updateB3Counter();
+    updateBracket();
+    updateProg();
+    const dt=new Date(d.saved);
+    showNote(`✅ Loaded! Saved ${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`,'ok');
+  }catch(e){ showNote('⚠️ Could not load draft','warn'); }
+}
+
+function showNote(msg,type){
+  const el=document.getElementById('saveNote');
+  el.textContent=msg; el.className='save-note '+type;
+  setTimeout(()=>{ el.textContent=''; el.className='save-note'; },5000);
+}
+
+// Auto-check for existing draft
+function checkDraft(){
+  try{
+    const raw=localStorage.getItem(SK);
+    if(!raw) return;
+    const d=JSON.parse(raw);
+    if(d.name) showNote(`💾 Draft found from ${new Date(d.saved).toLocaleDateString()} — click Load Draft to restore`,'info');
+  }catch(e){}
+}
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────────────────
+function downloadJSON(){
+  const name=document.getElementById('pname').value;
+  if(!name){ alert('Please enter your name first!'); return; }
+  const champion=document.getElementById('champ').value;
+  const groups_out={};
+  GL.forEach(g => groups_out[g]={first:S.groups[g].first||'',second:S.groups[g].second||''});
+  const best3_out=S.best3.map((t,i)=>({rank:i+1,team:t,group:teamGroup(t)||''}));
+  const bracket_out={};
+  ROUNDS.forEach(({pts,matches})=>matches.forEach(m=>{
+    bracket_out[m.id]={pts,team1:m.t1()||'',team2:m.t2()||'',winner:S.bracket[m.id]||''};
+  }));
+  const payload={
+    meta:{version:'2026-v2',name,submitted:new Date().toISOString()},
+    champion, groups:groups_out, best3:best3_out, bracket:bracket_out
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`WC2026_${name.replace(/\s+/g,'_')}.json`;
+  a.click();
+  showNote('✅ Downloaded! Send the file to Juan.','ok');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildChampion();
+buildGroups();
+buildBest3();
+buildBracket();
+updateBracket();
+checkDraft();
+</script>
+</body>
+</html>
