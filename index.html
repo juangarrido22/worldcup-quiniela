@@ -1250,12 +1250,14 @@ async function submitPredictions(){
     if(existing){
       ({ error } = await supaClient
         .from('predictions')
-        .update({ data: payload })
+        .update({ data: payload, created_at: new Date().toISOString() })
         .eq('name', name));
     } else {
+      // Generate a simple unique ID
+      const uid = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
       ({ error } = await supaClient
         .from('predictions')
-        .insert({ name, data: payload }));
+        .insert({ id: uid, name, data: payload, created_at: new Date().toISOString() }));
     }
 
     if(error) throw error;
